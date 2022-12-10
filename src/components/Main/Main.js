@@ -1,8 +1,47 @@
-// The Main component is a wrapper for the main content of the app. It includes:
-// The WeatherCard component, which shows the current temperature. Weather data is sent here, in addition to the Header, as props. Note that the weather data is not stored in Main.js, so you need to pass it down from the App component.
-// Clothing item cards, which are filtered based on the current weather. Wrap the ItemCard component into the unordered list and use the filter() and map() methods.
+import React from "react";
+import "./Main.css";
+import ItemCard from "../ItemCard/ItemCard";
+import WeatherCard from "../WeatherCard/WeatherCard";
 
-//WeatherCard
-//The WeatherCard receives data from its parent (props chain example: App → Main → WeatherCard). The weather data itself can be a big object, but we only need the temperature to render in the card. The measurement units aren’t important at this stage. We’ll only use Fahrenheit for now.
-//ItemCard
-//ItemCard is a component that renders the image and title for an item of clothing. Moreover, the image is an interactive element, meaning that if the user clicks on it, the item modal will open. Note that the item card itself doesn’t know about the modal state. Therefore, you need to pass it down from App to Main. In other words, when the user clicks on the image, you need to call the state change function handleCardClick() that ItemCard receives as a prop.
+function Main({ weatherData, cards, onCardClick }) {
+  const actualWeather = weatherData.temperature;
+
+  const weatherType = () => {
+    if (actualWeather >= 86) {
+      return "hot";
+    } else if (actualWeather >= 66 && actualWeather <= 85) {
+      return "warm";
+    } else if (actualWeather <= 65) {
+      return "cold";
+    }
+  };
+
+  return (
+    <main className="main">
+      <WeatherCard weatherData={weatherData} />
+      <section className="main__clothes">
+        <div className="main__info">
+          <div className="main__description-container">
+            <p className="main__description">
+              Today is {actualWeather}°F and it is {weatherType()}
+            </p>
+            <p className="main__description_slash"> / </p>
+            <p className="main__description">You may want to wear:</p>
+          </div>
+        </div>
+        <ul className="main__items">
+          {cards
+            .filter((card) => card.weather === weatherType())
+            .map((filteredCard) => (
+              <ItemCard
+                key={filteredCard._id}
+                card={filteredCard}
+                onCardClick={onCardClick}
+              />
+            ))}
+        </ul>
+      </section>
+    </main>
+  );
+}
+export default Main;
