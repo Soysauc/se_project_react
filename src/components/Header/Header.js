@@ -1,25 +1,58 @@
-// A child component of Header.js. The component includes:
-// A logo
+import React from "react";
+import "./Header.css";
+// import "./Navigation.css";
+import logoPath from "../../Images/wtwr-logo.svg";
+import avatarDefault from "../../Images/Avatar.svg"; //get image
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
   day: "numeric",
 });
 
-//florida is a placeholder
-function Header() {
+const Header = ({ weatherData, handleAddClick }) => {
+  if (!weatherData) return null;
+
+  const username = "Terrence Tegegne";
+  const avatar = "";
+
   return (
-    <ul className="header">
-      <li className="header__logo">
-        <img src="../Images/wtwr-logo.svg" alt="What-to-wear-Logo"></img>
-      </li>
-      <li className="header__text"> {currentDate}, Florida </li>
-      <li className="header__text"> + Add clothes</li>
-      <li className="header__text"> Terrence Tegegne</li>
-      <li className="header__avatar"></li>
-    </ul>
+    <header className="header">
+      <div className="header__container">
+        <img src={logoPath} alt="wtrt logo" className="header__logo" />
+        <p className="header__date">
+          {currentDate}, {weatherData.city}
+        </p>
+      </div>
+      <div className="header__nav">
+        <nav className="navigation">
+          <ul className="navigation__container">
+            <li>
+              <button onClick={handleAddClick} className="navigation__button">
+                + Add clothes
+              </button>
+            </li>
+            <li>
+              <div className="navigation__link">
+                {username}
+                {avatar ? (
+                  <img
+                    className="navigation__user"
+                    src={avatar || avatarDefault}
+                    alt="user avatar"
+                  />
+                ) : (
+                  <span className="navigation__user navigation__user_type_name">
+                    {username?.toUpperCase().charAt(0) || ""}
+                  </span>
+                )}
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
   );
-}
+};
 
 export default Header;
 
