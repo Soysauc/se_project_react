@@ -10,7 +10,7 @@ const currentDate = new Date().toLocaleString("default", {
 });
 
 const Header = ({ weatherData, handleAddClick }) => {
-  if (!weatherData) return null;
+  if (!weatherData) return <header> Weather Data is Null </header>;
 
   const username = "Terrence Tegegne";
   const avatar = "";

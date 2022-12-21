@@ -1,9 +1,15 @@
 import "./App.css";
+import Header from "../Header/Header";
+import Main from "../Main/Main";
 
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <Main
+        weatherData={{ temperature: null }}
+        cards={[]}
+        onCardClick={() => {}}
+      />
     </div>
   );
 }

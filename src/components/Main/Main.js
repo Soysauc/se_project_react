@@ -4,10 +4,11 @@ import ItemCard from "../ItemCard/ItemCard";
 import WeatherCard from "../WeatherCard/WeatherCard";
 
 function Main({ weatherData, cards, onCardClick }) {
-  const actualWeather = weatherData.temperature;
+  console.log(cards);
+  const actualWeather = weatherData?.temperature;
 
   const weatherType = () => {
-    if (actualWeather >= 86) {
+    if (actualWeather && actualWeather >= 86) {
       return "hot";
     } else if (actualWeather >= 66 && actualWeather <= 85) {
       return "warm";
@@ -18,7 +19,7 @@ function Main({ weatherData, cards, onCardClick }) {
 
   return (
     <main className="main">
-      <WeatherCard weatherData={weatherData} />
+      {/* <WeatherCard weatherData={weatherData} /> */}
       <section className="main__clothes">
         <div className="main__info">
           <div className="main__description-container">
