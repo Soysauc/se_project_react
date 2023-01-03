@@ -5,6 +5,7 @@ import Main from "../Main/Main";
 function App() {
   return (
     <div>
+      <Header />
       <Main
         weatherData={{ temperature: null }}
         cards={[]}
