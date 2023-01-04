@@ -1,8 +1,7 @@
 import React from "react";
 import "./Header.css";
-// import "./Navigation.css";
 import logoPath from "../../images/wtwr-logo.svg";
-import avatarDefault from "../../images/Avatar.svg"; //get image
+import avatarDefault from "../../images/Avatar.svg";
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -18,10 +17,8 @@ const Header = ({ weatherData, handleAddClick }) => {
     <header className="header">
       <div className="header__container">
         <img src={logoPath} alt="wtrt logo" className="header__logo" />
-        <h2 className="header__date">
-          January 3, Florida
-          {/* {currentDate}, {weatherData.city} */}
-        </h2>
+        <h2 className="header__date">{currentDate}</h2>
+        {/* {weatherData.city}  */}
         <button
           onClick={handleAddClick}
           type="button"
