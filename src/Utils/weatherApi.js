@@ -1,7 +1,6 @@
-const getForcastWeather = (location, APIkey) => {
-  const parsedLocation = `${location.latitude},${location.longitude}`;
+const getForecastWeather = (location, APIKey) => {
   return fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${APIkey}&q=${parsedLocation}&days=1`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${APIKey}&units=imperial`
   ).then((res) => {
     if (res.ok) {
       return res.json();
@@ -11,14 +10,14 @@ const getForcastWeather = (location, APIkey) => {
   });
 };
 
-const filterDataFromWeatherAPI = (data) => {
-  if (!data) {
+const filterDataFromWeatherAPI = (res) => {
+  if (!res) {
     return null;
   }
   const weather = {};
-  weather.city = data.location.name;
-  weather.temperature = data.current.temp_f;
+  weather.city = res.name;
+  weather.temperature = res.main.temp;
   return weather;
 };
 
-export { getForcastWeather, filterDataFromWeatherAPI };
+export { getForecastWeather, filterDataFromWeatherAPI };

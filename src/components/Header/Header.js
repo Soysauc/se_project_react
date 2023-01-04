@@ -9,7 +9,7 @@ const currentDate = new Date().toLocaleString("default", {
 });
 
 const Header = ({ weatherData, handleAddClick }) => {
-  // if (!weatherData) return <header> Weather Data is Null </header>;
+  if (!weatherData) return null;
 
   const username = "Terrence Tegegne";
 
@@ -17,8 +17,10 @@ const Header = ({ weatherData, handleAddClick }) => {
     <header className="header">
       <div className="header__container">
         <img src={logoPath} alt="wtrt logo" className="header__logo" />
-        <h2 className="header__date">{currentDate}</h2>
-        {/* {weatherData.city}  */}
+        <h2 className="header__date">
+          {currentDate}, {weatherData.city}
+        </h2>
+
         <button
           onClick={handleAddClick}
           type="button"
