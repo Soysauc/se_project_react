@@ -22,16 +22,10 @@ function Main({ weatherData, defaultClothing, handleCardClick }) {
   };
 
   function filterClothing(card) {
-    if (card.weather === getWeatherType()) {
-      return true;
-    } else {
-      return false;
-    }
+    return card.weather === getWeatherType();
   }
 
-  const clothingChoices = defaultClothing.filter((items) =>
-    filterClothing(items)
-  );
+  const clothingChoices = defaultClothing.filter(filterClothing);
 
   return (
     <main className="main">

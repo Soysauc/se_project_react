@@ -51,7 +51,7 @@ const App = () => {
   }, []);
 
   const closeModal = () => {
-    setActiveModal(false);
+    setActiveModal("");
   };
 
   const handleCardClick = (card) => {
