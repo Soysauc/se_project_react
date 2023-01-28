@@ -38,7 +38,7 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
 
   return (
     <main className="main">
-      <WeatherCard weatherData={weatherData} />
+      <WeatherCard weatherData={weatherData} currentTemp={currentTemp} />
       <h3 className="main__header">
         Today is
         {` ${currentTemp}°${currentTemperatureUnit} `} / You may want to wear:
@@ -48,10 +48,10 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
           <ItemCard
             isOpen="false"
             clothingChoice={item}
-            key={item._id}
-            name={item.name}
-            image={item.link}
-            weather={item.weather}
+            key={item.id}
+            // name={item.name}
+            // image={item.link}
+            //weather={item.weather}
             onClick={() => handleCardClick(item)}
           />
         ))}

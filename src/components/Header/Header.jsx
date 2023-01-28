@@ -35,6 +35,7 @@ const Header = ({ weatherData, handleAddClick }) => {
         </button>
         <Link
           to={"/profile"}
+          className="header__profile-link"
           style={{
             textDecoration: "none",
             display: "flex",

@@ -6,7 +6,7 @@ const ItemCard = ({ clothingChoice, onClick }) => {
       <h5 className="item-card__title">{clothingChoice.name}</h5>
       <img
         className="item-card__image"
-        src={clothingChoice.link}
+        src={clothingChoice.imageUrl}
         alt={clothingChoice.name}
       />
     </li>

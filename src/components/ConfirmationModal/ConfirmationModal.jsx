@@ -1,7 +1,7 @@
 import React from "react";
 import "./ConfirmationModal.css";
 
-const ConfirmationModal = ({ isOpen, name, onCloseModal, onCardDelete }) => {
+const ConfirmationModal = ({ isOpen, name, onClose, onCardDelete }) => {
   return (
     <div
       className={
@@ -11,7 +11,7 @@ const ConfirmationModal = ({ isOpen, name, onCloseModal, onCardDelete }) => {
       }
     >
       <div className="confirm-modal__body">
-        <button className="confirm-modal__close-btn" onClick={onCloseModal} />
+        <button className="confirm-modal__close-btn" onClick={onClose} />
         <h3 className="confirm-modal__title">
           Are you sure you want to delete this item? <br></br> This action is
           irreversible.
@@ -19,7 +19,7 @@ const ConfirmationModal = ({ isOpen, name, onCloseModal, onCardDelete }) => {
         <button className="confirm-modal__delete-btn" onClick={onCardDelete}>
           Yes, delete item
         </button>
-        <button className="confirm-modal__cancel-btn" onClick={onCloseModal}>
+        <button className="confirm-modal__cancel-btn" onClick={onClose}>
           Cancel
         </button>
       </div>

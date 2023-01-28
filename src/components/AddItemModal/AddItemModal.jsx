@@ -24,7 +24,7 @@ const AddItemModal = ({ isOpen, onAddItem, closeModal }) => {
     setWeather(evt.target.value);
   };
 
-  const handleSumbit = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     onAddItem(name, imageUrl, weather);
   };
@@ -36,7 +36,7 @@ const AddItemModal = ({ isOpen, onAddItem, closeModal }) => {
       title="New garment"
       buttonText="Add garment"
       onClose={closeModal}
-      onSubmit={handleSumbit}
+      onSubmit={handleSubmit}
       onAddItem={onAddItem}
     >
       <h4 className="form__label">Name</h4>
@@ -82,7 +82,7 @@ const AddItemModal = ({ isOpen, onAddItem, closeModal }) => {
             checked={weather === "warm"}
             className="form__input_radio"
             name={weather}
-            value="Warm"
+            value="warm"
             id="warm"
           />
           <label className="form__label_radio" htmlFor="warm">
@@ -96,7 +96,7 @@ const AddItemModal = ({ isOpen, onAddItem, closeModal }) => {
             checked={weather === "cold"}
             className="form__input_radio"
             name={weather}
-            value="Cold"
+            value="cold"
             id="cold"
           />
           <label className="form__label_radio" htmlFor="cold">
