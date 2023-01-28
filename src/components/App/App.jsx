@@ -11,11 +11,13 @@ import {
   getForecastWeather,
   filterDataFromWeatherAPI,
 } from "../../utils/weatherApi";
+import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
   const [activeModal, setActiveModal] = useState("");
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
@@ -58,7 +60,11 @@ const App = () => {
     setSelectedCard(card);
     setActiveModal("item");
   };
-
+  const handleToggleSwitchChange = () => {
+    currentTemperatureUnit === "F"
+      ? setCurrentTemperatureUnit("C")
+      : setCurrentTemperatureUnit("F");
+  };
   return (
     <div className="App">
       <CurrentTemperatureUnitContext.Provider
