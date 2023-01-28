@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Route } from "react-router-dom";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import ItemModal from "../ItemModal/ItemModal";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import "./App.css";
+import Profile from "../Profile/Profile";
+import { getItems, addItem, deleteItem } from "../../utils/api";
 import { location, APIKey } from "../../utils/constants";
-import { defaultClothingItems } from "../../utils/clothingItems";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
@@ -17,6 +20,7 @@ const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
   const [activeModal, setActiveModal] = useState("");
+  const [clothingItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
   useEffect(() => {
@@ -43,7 +47,8 @@ const App = () => {
     function handleOverlay(evt) {
       if (
         evt.target.classList.contains("modal") ||
-        evt.target.classList.contains("popup")
+        evt.target.classList.contains("popup") ||
+        evt.target.classList.contains("confirm-modal")
       ) {
         closeModal();
       }
@@ -60,11 +65,51 @@ const App = () => {
     setSelectedCard(card);
     setActiveModal("item");
   };
+
+  const handleDeleteClick = () => {
+    setActiveModal("confirm");
+  };
+
+  const handleCardDelete = () => {
+    deleteItem(selectedCard.id)
+      .then(() => {
+        setClothingItems(
+          clothingItems.filter((item) => item.id !== selectedCard.id)
+        );
+        setSelectedCard({});
+        closeModal();
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
       ? setCurrentTemperatureUnit("C")
       : setCurrentTemperatureUnit("F");
   };
+
+  const fetchClothingItems = () => {
+    getItems()
+      .then((data) => {
+        setClothingItems(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchClothingItems();
+  }, []);
+
+  const handleAddItemSubmit = (name, imageUrl, weatherType) => {
+    addItem(name, imageUrl, weatherType)
+      .then((item) => {
+        const items = [item, ...clothingItems];
+        setClothingItems(items);
+        closeModal();
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="App">
       <CurrentTemperatureUnitContext.Provider
@@ -76,82 +121,44 @@ const App = () => {
             setActiveModal("add");
           }}
         />
-        <Main
-          weatherData={weatherData}
-          defaultClothing={defaultClothingItems}
-          handleCardClick={handleCardClick}
-        />
+        <Route exact path={"/"}>
+          <Main
+            weatherData={weatherData}
+            clothingItems={clothingItems}
+            handleCardClick={handleCardClick}
+          />
+        </Route>
+        <Route path={"/profile"}>
+          <Profile
+            weatherData={weatherData}
+            clothingItems={clothingItems}
+            handleCardClick={handleCardClick}
+            openModal={() => {
+              setActiveModal("add");
+            }}
+          />
+        </Route>
         <Footer />
-        <ModalWithForm
+
+        <AddItemModal
           isOpen={activeModal === "add"}
-          type="add"
-          title="New garment"
-          buttonText="Add garment"
-          onClose={closeModal}
-        >
-          <h4 className="form__label">Name</h4>
-          <input
-            className="form__input form__input_type_name"
-            name="name"
-            type="text"
-            placeholder="Name"
-            minLength="1"
-            maxLength="40"
-            required
-          />
-          <h4 className="form__label">Image</h4>
-          <input
-            className="form__input form__input_type_image"
-            name="image"
-            type="url"
-            placeholder="Image URL"
-            required
-          />
-          <h4 className="form__label">Select the weather type:</h4>
-          <div className="form__radio-container">
-            <div className="form__radio">
-              <input
-                className="form__input_radio"
-                name="temp"
-                value="Hot"
-                type="radio"
-                id="hot"
-              />
-              <label className="form__label_radio" htmlFor="hot">
-                Hot
-              </label>
-            </div>
-            <div className="form__radio">
-              <input
-                className="form__input_radio"
-                name="temp"
-                value="Warm"
-                type="radio"
-                id="warm"
-              />
-              <label className="form__label_radio" htmlFor="warm">
-                Warm
-              </label>
-            </div>
-            <div className="form__radio">
-              <input
-                className="form__input_radio"
-                name="temp"
-                value="Cold"
-                type="radio"
-                id="cold"
-              />
-              <label className="form__label_radio" htmlFor="cold">
-                Cold
-              </label>
-            </div>
-          </div>
-        </ModalWithForm>
+          type={"add"}
+          onAddItem={handleAddItemSubmit}
+          onCloseModal={closeModal}
+        />
+
         <ItemModal
           isOpen={activeModal === "item"}
           type={"item"}
           card={selectedCard}
           onClose={closeModal}
+          onDeleteClick={handleDeleteClick}
+        />
+        <ConfirmationModal
+          isOpen={activeModal === "confirm"}
+          type={"confirm"}
+          onCloseModal={closeModal}
+          onCardDelete={handleCardDelete}
         />
       </CurrentTemperatureUnitContext.Provider>
     </div>
