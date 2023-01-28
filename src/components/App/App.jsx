@@ -144,7 +144,7 @@ const App = () => {
           isOpen={activeModal === "add"}
           type={"add"}
           onAddItem={handleAddItemSubmit}
-          onCloseModal={closeModal}
+          onClose={closeModal}
         />
 
         <ItemModal
@@ -157,7 +157,7 @@ const App = () => {
         <ConfirmationModal
           isOpen={activeModal === "confirm"}
           type={"confirm"}
-          onCloseModal={closeModal}
+          onClose={closeModal}
           onCardDelete={handleCardDelete}
         />
       </CurrentTemperatureUnitContext.Provider>

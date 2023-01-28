@@ -16,9 +16,10 @@ const filterDataFromWeatherAPI = (res) => {
   }
   const weather = {};
   weather.city = res.name;
-  weather.temperature = res.main.temp;
-  weather.temperature.F = `${Math.round(res.main.temp)}°F`;
-  weather.temperature.C = `${Math.round(((res.main.temp - 32) * 5) / 9)}°C`;
+  weather.temperature = {
+    F: `${Math.round(res.main.temp)}`,
+    C: `${Math.round(((res.main.temp - 32) * 5) / 9)}`,
+  };
   weather.conditions = res.weather[0].main;
   return weather;
 };

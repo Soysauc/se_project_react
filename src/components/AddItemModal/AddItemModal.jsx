@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
+const AddItemModal = ({ isOpen, onAddItem, closeModal }) => {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [weather, setWeather] = useState("");
@@ -35,7 +35,7 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
       type="add"
       title="New garment"
       buttonText="Add garment"
-      onCloseModal={onCloseModal}
+      onClose={closeModal}
       onSubmit={handleSumbit}
       onAddItem={onAddItem}
     >
@@ -82,7 +82,7 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
             checked={weather === "warm"}
             className="form__input_radio"
             name={weather}
-            value="warm"
+            value="Warm"
             id="warm"
           />
           <label className="form__label_radio" htmlFor="warm">
@@ -96,7 +96,7 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
             checked={weather === "cold"}
             className="form__input_radio"
             name={weather}
-            value="cold"
+            value="Cold"
             id="cold"
           />
           <label className="form__label_radio" htmlFor="cold">

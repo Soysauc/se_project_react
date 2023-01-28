@@ -1,17 +1,28 @@
 import "./ItemModal.css";
 
-function ItemModal({ isOpen, name, card, onClose }) {
+function ItemModal({ isOpen, name, card, onClose, onDeleteClick }) {
   return (
     <div
       className={
-        isOpen ? `popup modal_name_${name}` : `modal_name_${name} popup_closed`
+        isOpen
+          ? `item-modal modal_name_${name}`
+          : `modal_name_${name} item-modal_closed`
       }
     >
-      <div className="popup__body">
-        <button className="popup__close-btn" onClick={onClose} />
-        <img className="popup__image" src={card.link} alt={card.name} />
-        <h3 className="popup__name">{card.name}</h3>
-        <p className="popup__weather">Weather: {card.weather}</p>
+      <div className="item-modal__body">
+        <button className="item-modal__close-btn" onClick={onClose} />
+        <img
+          className="item-modal__image"
+          src={card.imageUrl}
+          alt={card.name}
+        />
+        <div className="item-modal__info">
+          <h3 className="item-modal__name">{card.name}</h3>
+          <button className="item-modal__delete-btn" onClick={onDeleteClick}>
+            Delete item
+          </button>
+          <h3 className="item-modal__weather">Weather: {card.weather}</h3>
+        </div>
       </div>
     </div>
   );
