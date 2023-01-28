@@ -7,7 +7,7 @@
 }
 
 .confirm-modal {
-  background-color: #0000004d;
+  background-color: #00004d;
   position: fixed;
   height: 100vh;
   width: 100vw;
@@ -55,7 +55,7 @@
   position: absolute;
   top: 22px;
   right: 30px;
-  background-image: url(../../images/close-btn.svg);
+  background-image: url(../../images/close.svg);
   background-color: transparent;
   border: none;
   height: 16px;

@@ -1,4 +1,4 @@
-const baseUrl = "https://my-json-server.typicode.com/SoySauc/se_project_react";
+const baseUrl = "https://my-json-server.typicode.com/Soysauc/se_project_react";
 const headers = {
   "Content-Type": "application/json",
 };
