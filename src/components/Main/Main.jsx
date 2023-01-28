@@ -40,7 +40,8 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
     <main className="main">
       <WeatherCard weatherData={weatherData} />
       <h3 className="main__header">
-        Today is {Math.round(currentTemp)}&deg;F / You may want to wear:
+        Today is
+        {` ${currentTemp}°${currentTemperatureUnit} `} / You may want to wear:
       </h3>
       <ul className="main__gallery">
         {clothingChoices.map((item) => (
