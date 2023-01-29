@@ -7,7 +7,7 @@
 }
 
 .confirm-modal {
-  background-color: #00004d;
+  background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   height: 100vh;
   width: 100vw;
@@ -32,7 +32,7 @@
 .confirm-modal__body {
   height: 280px;
   width: 670px;
-  background-color: #fff;
+  background-color: white;
   font-size: 16px;
   font-weight: 700;
   line-height: 20px;
