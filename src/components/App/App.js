@@ -99,10 +99,12 @@ const App = () => {
     fetchClothingItems();
   }, []);
 
+  //changed item
+
   const handleAddItemSubmit = (name, imageUrl, weatherType) => {
     addItem(name, imageUrl, weatherType)
       .then((item) => {
-        const items = [item, ...clothingItems];
+        const items = [...clothingItems, item];
         setClothingItems(items);
         closeModal();
       })
