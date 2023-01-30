@@ -47,6 +47,7 @@ const App = () => {
     function handleOverlay(evt) {
       if (
         evt.target.classList.contains("modal") ||
+        evt.target.classList.contains("item-modal") ||
         evt.target.classList.contains("confirm-modal")
       ) {
         closeModal();
