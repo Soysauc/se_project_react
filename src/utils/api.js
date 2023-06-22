@@ -1,6 +1,6 @@
-const baseUrl = "https://my-json-server.typicode.com/Soysauc/se_project_react";
+const baseUrl = 'http://localhost:3001';
 const headers = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };
 
 const handleServerResponse = (res) => {
@@ -13,7 +13,7 @@ const handleServerResponse = (res) => {
 
 const getItems = async () => {
   const res = await fetch(`${baseUrl}/items`, {
-    method: "GET",
+    method: 'GET',
     headers: headers,
   });
   return handleServerResponse(res);
@@ -21,7 +21,7 @@ const getItems = async () => {
 
 const addItem = async (name, imageUrl, weather) => {
   const res = await fetch(`${baseUrl}/items`, {
-    method: "POST",
+    method: 'POST',
     headers: headers,
     body: JSON.stringify({
       name,
@@ -34,7 +34,7 @@ const addItem = async (name, imageUrl, weather) => {
 
 const deleteItem = async (id) => {
   const res = await fetch(`${baseUrl}/items/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: headers,
   });
   return handleServerResponse(res);

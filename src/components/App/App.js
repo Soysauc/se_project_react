@@ -118,7 +118,7 @@ const App = () => {
   };
 
   return (
-    <CurrentUserContext.Provider>
+    <CurrentUserContext.Provider value={{ isLoggedIn }}>
       <div className='App'>
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
