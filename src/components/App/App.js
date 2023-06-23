@@ -25,8 +25,14 @@ const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
 
   //sprint 14
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    avatar: '',
+    _id: '',
+  });
+  const [showFormError, setShowFormError] = useState(false);
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
@@ -96,7 +102,7 @@ const App = () => {
   const fetchClothingItems = () => {
     getItems()
       .then(({ data }) => {
-        console.log({ data });
+        // console.log({ data });
         setClothingItems(data);
       })
       .catch((err) => console.log(err));
@@ -109,6 +115,7 @@ const App = () => {
   //changed item
 
   const handleAddItemSubmit = (name, imageUrl, weatherType) => {
+    setIsLoading(true);
     addItem(name, imageUrl, weatherType)
       .then((item) => {
         const items = [...clothingItems, item];
