@@ -1,32 +1,34 @@
-import "./ClothesSection.css";
-import React from "react";
-import ItemCard from "../ItemCard/ItemCard";
+import './ClothesSection.css';
+import React from 'react';
+import ItemCard from '../ItemCard/ItemCard';
 
-function ClothesSection({ clothingItems, handleCardClick, openModal }) {
+function ClothesSection({ clothingItems = [], handleCardClick, openModal }) {
   return (
-    <div className="profile__clothes-section">
-      <div className="profile__clothes-section-header">
-        <h2 className="profile__clothes-section-title">Your items</h2>
+    <div className='profile__clothes-section'>
+      <div className='profile__clothes-section-header'>
+        <h2 className='profile__clothes-section-title'>Your items</h2>
         <button
-          className="profile__add-clothes-btn"
-          type="button"
+          className='profile__add-clothes-btn'
+          type='button'
           onClick={openModal}
         >
           + Add new
         </button>
       </div>
-      <ul className="profile__clothes-section-items">
-        {clothingItems.map((item) => (
-          <ItemCard
-            isOpen="false"
-            clothingChoice={item}
-            key={item.id}
-            name={item.name}
-            image={item.imageUrl}
-            weather={item.weather}
-            onClick={() => handleCardClick(item)}
-          />
-        ))}
+
+      <ul className='profile__clothes-section-items'>
+        {Array.isArray(clothingItems) &&
+          clothingItems.map((item) => (
+            <ItemCard
+              isOpen='false'
+              clothingChoice={item}
+              key={item.id}
+              name={item.name}
+              image={item.imageUrl}
+              weather={item.weather}
+              onClick={() => handleCardClick(item)}
+            />
+          ))}
       </ul>
     </div>
   );
