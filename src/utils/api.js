@@ -16,6 +16,7 @@ const getItems = async () => {
     method: 'GET',
     headers: headers,
   });
+  // res.json().then(console.log);
   return handleServerResponse(res);
 };
 

@@ -2,7 +2,7 @@ import './ClothesSection.css';
 import React from 'react';
 import ItemCard from '../ItemCard/ItemCard';
 
-function ClothesSection({ clothingItems = [], handleCardClick, openModal }) {
+function ClothesSection({ clothingItems, handleCardClick, openModal }) {
   return (
     <div className='profile__clothes-section'>
       <div className='profile__clothes-section-header'>
@@ -17,18 +17,17 @@ function ClothesSection({ clothingItems = [], handleCardClick, openModal }) {
       </div>
 
       <ul className='profile__clothes-section-items'>
-        {Array.isArray(clothingItems) &&
-          clothingItems.map((item) => (
-            <ItemCard
-              isOpen='false'
-              clothingChoice={item}
-              key={item.id}
-              name={item.name}
-              image={item.imageUrl}
-              weather={item.weather}
-              onClick={() => handleCardClick(item)}
-            />
-          ))}
+        {clothingItems.map((item) => (
+          <ItemCard
+            isOpen='false'
+            clothingChoice={item}
+            key={item.id}
+            name={item.name}
+            image={item.imageUrl}
+            weather={item.weather}
+            onClick={() => handleCardClick(item)}
+          />
+        ))}
       </ul>
     </div>
   );

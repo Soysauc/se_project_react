@@ -95,7 +95,8 @@ const App = () => {
 
   const fetchClothingItems = () => {
     getItems()
-      .then((data) => {
+      .then(({ data }) => {
+        console.log({ data });
         setClothingItems(data);
       })
       .catch((err) => console.log(err));

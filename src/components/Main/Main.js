@@ -34,9 +34,8 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
     return card.weather === getWeatherType();
   }
 
-  const clothingChoices = Array.isArray(clothingItems)
-    ? clothingItems.filter(filterClothing)
-    : [];
+  const clothingChoices = clothingItems.filter(filterClothing);
+  //commented for
 
   return (
     <main className='main'>
@@ -50,7 +49,7 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
           <ItemCard
             isOpen='false'
             clothingChoice={item}
-            key={item.id}
+            key={item._id}
             // name={item.name}
             // image={item.link}
             //weather={item.weather}
