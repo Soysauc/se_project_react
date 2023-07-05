@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import RegisterModal from '../RegisterModal/RegisterModal';
+import EditProfileModal from '../EditProfileModal/EditProfileModal';
+import { signup, signin, getUser, updateUser } from '../../utils/auth';
+import LoginModal from '../LoginModal/LoginModal';
 import ItemModal from '../ItemModal/ItemModal';
 import AddItemModal from '../AddItemModal/AddItemModal';
 import './App.css';
@@ -33,6 +38,14 @@ const App = () => {
     _id: '',
   });
   const [showFormError, setShowFormError] = useState(false);
+
+  const handleRegistration = async (name, avatar, email, password) => {
+    return signup(name, avatar, email, password).then((data) => {
+      setIsLoggedIn(true);
+      setCurrentUser({ name: data.name, avatar: data.avatar });
+      closeModal();
+    });
+  };
 
   useEffect(() => {
     if (location.latitude && location.longitude) {
@@ -98,6 +111,32 @@ const App = () => {
       ? setCurrentTemperatureUnit('C')
       : setCurrentTemperatureUnit('F');
   };
+  const handleToggleModal = () => {
+    activeModal === 'login'
+      ? setActiveModal('register')
+      : setActiveModal('login');
+  };
+  const handleProfileUpdate = async ({ name, avatar, token }) => {
+    updateUser(name, avatar, token)
+      .then((data) => {
+        setCurrentUser({
+          name: data.name,
+          avatar: data.avatar,
+          id: data._id,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const handleAuthorization = (email, password) => {
+    signin(email, password)
+      .then(() => {
+        setIsLoggedIn(true);
+        closeModal();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const fetchClothingItems = () => {
     getItems()
@@ -107,6 +146,24 @@ const App = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      const jwt = localStorage.getItem('token');
+      setIsLoggedIn(true);
+      getUser(jwt)
+        .then((data) => {
+          setCurrentUser({
+            name: data.name,
+            avatar: data.avatar,
+            id: data._id,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     fetchClothingItems();
@@ -137,23 +194,28 @@ const App = () => {
               setActiveModal('add');
             }}
           />
-          <Route exact path={'/'}>
-            <Main
-              weatherData={weatherData}
-              clothingItems={clothingItems}
-              handleCardClick={handleCardClick}
-            />
-          </Route>
-          <Route path={'/profile'}>
-            <Profile
-              weatherData={weatherData}
-              clothingItems={clothingItems}
-              handleCardClick={handleCardClick}
-              openModal={() => {
-                setActiveModal('add');
-              }}
-            />
-          </Route>
+          <Switch>
+            <Route exact path={'/'}>
+              <Main
+                weatherData={weatherData}
+                clothingItems={clothingItems}
+                handleCardClick={handleCardClick}
+              />
+            </Route>
+            {/* <Route path={'/profile'}>  Legacy code*/}
+            <ProtectedRoute isLoggedIn={isLoggedIn} path='/profile'>
+              <Profile
+                weatherData={weatherData}
+                clothingItems={clothingItems}
+                handleCardClick={handleCardClick}
+                openModal={() => {
+                  setActiveModal('add');
+                }}
+              />
+            </ProtectedRoute>
+            {/* </Route> */}
+          </Switch>
+
           <Footer />
 
           <AddItemModal
@@ -162,7 +224,15 @@ const App = () => {
             onAddItem={handleAddItemSubmit}
             onClose={closeModal}
           />
-
+          {/* Sprint 14 */}
+          <LoginModal
+            isOpen={activeModal === 'login'}
+            type={'login'}
+            onCloseModal={closeModal}
+            handleToggleModal={handleToggleModal}
+            handleLogin={handleAuthorization}
+            handleProfileUpdate={handleProfileUpdate}
+          />
           <ItemModal
             isOpen={activeModal === 'item'}
             type={'item'}
@@ -170,11 +240,32 @@ const App = () => {
             onClose={closeModal}
             onDeleteClick={handleDeleteClick}
           />
+          {/* Sprint 14 */}
+
+          <RegisterModal
+            handleSignUp={handleRegistration}
+            isOpen={activeModal === 'register'}
+            type={'register'}
+            onCloseModal={closeModal}
+            handleRegistration={handleRegistration}
+            handleToggleModal={handleToggleModal}
+          />
+
           <ConfirmationModal
             isOpen={activeModal === 'confirm'}
             type={'confirm'}
             onClose={closeModal}
             onCardDelete={handleCardDelete}
+          />
+
+          {/* Sprint 14 */}
+
+          <EditProfileModal
+            isOpen={activeModal === 'update'}
+            type={'update'}
+            onCloseModal={closeModal}
+            currentUser={currentUser}
+            handleUserUpdate={handleProfileUpdate}
           />
         </CurrentTemperatureUnitContext.Provider>
       </div>

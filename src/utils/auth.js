@@ -9,6 +9,10 @@ const checkResponse = (res) => {
     throw new Error('User exists');
   }
 };
+async function req(url, options) {
+  const res = await fetch(url, options);
+  return checkResponse(res);
+}
 
 export const signup = ({ name, avatar, email, password }) => {
   return fetch(`${baseUrl}/signup`, {
@@ -36,17 +40,39 @@ export const signin = ({ email, password }) => {
       }
     });
 };
-
-export const checkToken = (token) => {
-  return fetch(`${baseUrl}/user/me`, {
+export const updateUser = (name, avatar, token) => {
+  return req(`${baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  });
+};
+export const getUser = (token) => {
+  return req(`${baseUrl}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'authorization': `Bearer ${token}`,
     },
-  })
-    .then(checkResponse)
-    .then((data) => {
-      return data;
-    });
+  }).then((data) => {
+    return data;
+  });
 };
+
+// export const checkToken = (token) => {
+//   return fetch(`${baseUrl}/user/me`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'authorization': `Bearer ${token}`,
+//     },
+//   })
+//     .then(checkResponse)
+//     .then((data) => {
+//       return data;
+//     });
+// };
