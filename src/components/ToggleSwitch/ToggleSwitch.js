@@ -1,57 +1,57 @@
-import React, { useContext, useEffect, useState } from "react";
-import "./ToggleSwitch.css";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+import React, { useContext, useEffect, useState } from 'react';
+import './ToggleSwitch.css';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 const ToggleSwitch = () => {
   const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
     CurrentTemperatureUnitContext
   );
 
-  const [isChecked, setIsChecked] = useState(currentTemperatureUnit === "C");
+  const [isChecked, setIsChecked] = useState(currentTemperatureUnit === 'C');
 
-  const [fahrenheitColor, setFahrenheitColor] = useState("");
-  const [celciusColor, setCelciusColor] = useState("");
+  const [fahrenheitColor, setFahrenheitColor] = useState('');
+  const [celsiusColor, setCelsiusColor] = useState('');
 
   useEffect(
-    () => setIsChecked(currentTemperatureUnit === "C"),
+    () => setIsChecked(currentTemperatureUnit === 'C'),
     [currentTemperatureUnit]
   );
 
   useEffect(() => {
-    if (currentTemperatureUnit === "F") {
-      setFahrenheitColor("white");
+    if (currentTemperatureUnit === 'F') {
+      setFahrenheitColor('white');
     } else {
-      setFahrenheitColor("#7e7e7e");
+      setFahrenheitColor('#7e7e7e');
     }
   }, [currentTemperatureUnit]);
 
   useEffect(() => {
-    if (currentTemperatureUnit === "C") {
-      setCelciusColor("white");
+    if (currentTemperatureUnit === 'C') {
+      setCelsiusColor('white');
     } else {
-      setCelciusColor("#7e7e7e");
+      setCelsiusColor('#7e7e7e');
     }
   }, [currentTemperatureUnit]);
 
   return (
-    <div className="toggle-switch">
-      <label className="toggle-switch__label" htmlFor="toggle-switch">
+    <div className='toggle-switch'>
+      <label className='toggle-switch__label' htmlFor='toggle-switch'>
         <p
-          className="toggle-switch__label_fahrenheit"
+          className='toggle-switch__label_fahrenheit'
           style={{ color: fahrenheitColor }}
         >
           F
         </p>
         <p
-          className="toggle-switch__label_celcius"
-          style={{ color: celciusColor }}
+          className='toggle-switch__label_celsius'
+          style={{ color: celsiusColor }}
         >
           C
         </p>
         <input
-          type="checkbox"
-          className="toggle-switch__checkbox"
-          id="toggle-switch"
+          type='checkbox'
+          className='toggle-switch__checkbox'
+          id='toggle-switch'
           value={currentTemperatureUnit}
           onChange={handleToggleSwitchChange}
           checked={isChecked}
