@@ -43,7 +43,7 @@ const App = () => {
     return signup(name, avatar, email, password).then((data) => {
       setIsLoggedIn(true);
       setCurrentUser({ name: data.name, avatar: data.avatar });
-      closeModal();
+      onClose();
     });
   };
 
@@ -60,7 +60,7 @@ const App = () => {
   useEffect(() => {
     function handleEscape(evt) {
       if (evt.code === 'Escape') {
-        closeModal();
+        onClose();
       }
     }
     document.addEventListener('keydown', handleEscape);
@@ -74,14 +74,14 @@ const App = () => {
         evt.target.classList.contains('item-modal') ||
         evt.target.classList.contains('confirm-modal')
       ) {
-        closeModal();
+        onClose();
       }
     }
     document.addEventListener('click', handleOverlay);
     return () => document.removeEventListener('click', handleOverlay);
   }, []);
 
-  const closeModal = () => {
+  const onClose = () => {
     setActiveModal('');
   };
 
@@ -101,9 +101,30 @@ const App = () => {
           clothingItems.filter((item) => item.id !== selectedCard.id)
         );
         setSelectedCard({});
-        closeModal();
+        onClose();
       })
       .catch((err) => console.log(err));
+  };
+  const addCardLike = (id, token) => {};
+  const removeCardLike = (id, token) => {};
+
+  const handleLikeClick = ({ id, isLiked, user }) => {
+    const token = localStorage.getItem('jwt');
+    isLiked
+      ? addCardLike({ id, user }, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((card) => (card._id === id ? updatedCard : card))
+            );
+          })
+          .catch((err) => console.log(err))
+      : removeCardLike({ id, user }, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((card) => (card._id === id ? updatedCard : card))
+            );
+          })
+          .catch((err) => console.log(err));
   };
 
   const handleToggleSwitchChange = () => {
@@ -133,7 +154,7 @@ const App = () => {
     signin(email, password)
       .then(() => {
         setIsLoggedIn(true);
-        closeModal();
+        onClose();
       })
       .catch((err) => console.log(err));
   };
@@ -177,22 +198,29 @@ const App = () => {
       .then((item) => {
         const items = [...clothingItems, item];
         setClothingItems(items);
-        closeModal();
+        onClose();
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <CurrentUserContext.Provider value={{ isLoggedIn }}>
+    <CurrentUserContext.Provider value={currentUser}>
       <div className='App'>
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
           <Header
             weatherData={weatherData}
-            handleAddClick={() => {
+            openAddModal={() => {
               setActiveModal('add');
             }}
+            openLoginModal={() => {
+              setActiveModal('login');
+            }}
+            openRegisterModal={() => {
+              setActiveModal('register');
+            }}
+            isLoggedIn={isLoggedIn}
           />
           <Switch>
             <Route exact path={'/'}>
@@ -200,6 +228,8 @@ const App = () => {
                 weatherData={weatherData}
                 clothingItems={clothingItems}
                 handleCardClick={handleCardClick}
+                handleLikeClick={handleLikeClick}
+                loggedIn={isLoggedIn}
               />
             </Route>
             {/* <Route path={'/profile'}>  Legacy code*/}
@@ -222,13 +252,13 @@ const App = () => {
             isOpen={activeModal === 'add'}
             type={'add'}
             onAddItem={handleAddItemSubmit}
-            onClose={closeModal}
+            onClose={onClose}
           />
           {/* Sprint 14 */}
           <LoginModal
             isOpen={activeModal === 'login'}
             type={'login'}
-            onCloseModal={closeModal}
+            onClose={onClose}
             handleToggleModal={handleToggleModal}
             handleLogin={handleAuthorization}
             handleProfileUpdate={handleProfileUpdate}
@@ -237,7 +267,7 @@ const App = () => {
             isOpen={activeModal === 'item'}
             type={'item'}
             card={selectedCard}
-            onClose={closeModal}
+            onClose={onClose}
             onDeleteClick={handleDeleteClick}
           />
           {/* Sprint 14 */}
@@ -246,7 +276,7 @@ const App = () => {
             handleSignUp={handleRegistration}
             isOpen={activeModal === 'register'}
             type={'register'}
-            onCloseModal={closeModal}
+            onClose={onClose}
             handleRegistration={handleRegistration}
             handleToggleModal={handleToggleModal}
           />
@@ -254,7 +284,7 @@ const App = () => {
           <ConfirmationModal
             isOpen={activeModal === 'confirm'}
             type={'confirm'}
-            onClose={closeModal}
+            onClose={onClose}
             onCardDelete={handleCardDelete}
           />
 
@@ -263,7 +293,7 @@ const App = () => {
           <EditProfileModal
             isOpen={activeModal === 'update'}
             type={'update'}
-            onCloseModal={closeModal}
+            onClose={onClose}
             currentUser={currentUser}
             handleUserUpdate={handleProfileUpdate}
           />

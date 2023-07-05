@@ -1,17 +1,53 @@
-.profile__info {
+.sidebar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   align-self: flex-start;
+  flex-direction: column;
 }
 
-.profile__user-icon {
+.sidebar__user {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.sidebar__user-icon {
   margin-right: 16px;
   height: 40px;
   width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.profile__user-name {
+.sidebar__user-icon_placeholder {
+  height: 40px;
+  width: 40px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: 'Cabinet Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.sidebar__user-name {
   margin: 0px;
   line-height: 25px;
   font-size: 20px;
+}
+
+.sidebar__btn {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  line-height: 25px;
+  font-size: 20px;
+  padding-bottom: 8px;
 }

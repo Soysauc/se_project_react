@@ -12,6 +12,7 @@ const EditProfileModal = ({
     setName(currentUser.name);
     setAvatar(currentUser.avatar);
   }, [isOpen]);
+
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
 

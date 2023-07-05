@@ -1,7 +1,7 @@
 const baseUrl = 'http://localhost:3001';
-const headers = {
-  'Content-Type': 'application/json',
-};
+// const headers = {
+//   'Content-Type': 'application/json',
+// };
 
 const handleServerResponse = (res) => {
   if (res.ok) {
@@ -10,35 +10,46 @@ const handleServerResponse = (res) => {
     return Promise.reject(`Error: ${res.status}`);
   }
 };
+function req(url, options) {
+  return fetch(url, options).then(handleServerResponse);
+}
 
-const getItems = async () => {
-  const res = await fetch(`${baseUrl}/items`, {
+const getItems = (token) => {
+  return req(`${baseUrl}/items`, {
     method: 'GET',
-    headers: headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'authorization': `Bearer ${token}`,
+    },
   });
-  // res.json().then(console.log);
-  return handleServerResponse(res);
 };
 
-const addItem = async (name, imageUrl, weather) => {
-  const res = await fetch(`${baseUrl}/items`, {
+const addItem = async (name, imageUrl, weather, token) => {
+  return req(`${baseUrl}/items`, {
     method: 'POST',
-    headers: headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'authorization': `Bearer ${token}`,
+    },
     body: JSON.stringify({
       name,
       imageUrl,
       weather,
     }),
   });
-  return handleServerResponse(res);
 };
 
-const deleteItem = async (id) => {
-  const res = await fetch(`${baseUrl}/items/${id}`, {
+const deleteItem = (id, token) => {
+  return req(`${baseUrl}/items/${id}`, {
     method: 'DELETE',
-    headers: headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'authorization': `Bearer ${token}`,
+    },
   });
-  return handleServerResponse(res);
 };
 
 export { getItems, addItem, deleteItem };
