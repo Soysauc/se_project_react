@@ -11,7 +11,11 @@ function Profile({
   openEditModal,
   isLoggedIn,
   handleLogout,
+  handleLikeClick,
 }) {
+  const myClothingChoices = clothingItems.filter(
+    (item) => item.owner === currentUser._id
+  );
   return (
     <div className='profile'>
       <SideBar
@@ -20,10 +24,11 @@ function Profile({
         openEditModal={openEditModal}
       />
       <ClothesSection
-        clothingItems={clothingItems}
+        clothingItems={myClothingChoices}
         handleCardClick={handleCardClick}
         openModal={openModal}
         isLoggedIn={isLoggedIn}
+        handleLikeClick={handleLikeClick}
       />
     </div>
   );

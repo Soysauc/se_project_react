@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import '../ModalWithForm/ModalWithForm.css';
@@ -8,6 +8,7 @@ const RegisterModal = ({
   onClose,
   handleRegistration,
   handleToggleModal,
+  isLoading,
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,24 +23,28 @@ const RegisterModal = ({
     setAvatar('');
   }, [isOpen]);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const Validation = useMemo(() => {
+    return password.length >= 8 && email.length >= 1;
+  }, [email, password]);
+
+  const handleEmail = (evt) => {
+    setEmail(evt.target.value);
   };
 
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
+  const handlePassword = (evt) => {
+    setPassword(evt.target.value);
   };
 
-  const handleName = (e) => {
-    setName(e.target.value);
+  const handleName = (evt) => {
+    setName(evt.target.value);
   };
 
-  const handleAvatar = (e) => {
-    setAvatar(e.target.value);
+  const handleAvatar = (evt) => {
+    setAvatar(evt.target.value);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (evt) => {
+    evt.preventDefault();
     handleRegistration(name, avatar, email, password);
     history.push('/profile');
   };
@@ -49,9 +54,10 @@ const RegisterModal = ({
       isOpen={isOpen}
       type='register'
       title='Sign up'
-      buttonText='Next'
+      buttonText={isLoading ? 'Loading...' : 'Next'}
       onClose={onClose}
       onSubmit={onSubmit}
+      disabled={!Validation}
     >
       <h4 className='form__label'>Email *</h4>
       <input

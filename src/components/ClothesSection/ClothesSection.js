@@ -1,8 +1,17 @@
 import './ClothesSection.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import ItemCard from '../ItemCard/ItemCard';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
-function ClothesSection({ clothingItems, handleCardClick, openModal }) {
+function ClothesSection({
+  clothingItems,
+  handleCardClick,
+  openModal,
+  isLoggedIn,
+  handleLikeClick,
+}) {
+  const currentUser = useContext(CurrentUserContext);
+
   return (
     <div className='profile__clothes-section'>
       <div className='profile__clothes-section-header'>
@@ -19,12 +28,19 @@ function ClothesSection({ clothingItems, handleCardClick, openModal }) {
       <ul className='profile__clothes-section-items'>
         {clothingItems.map((item) => (
           <ItemCard
-            isOpen='false'
+            // isOpen='false'
             clothingChoice={item}
             key={item.id}
-            name={item.name}
-            image={item.imageUrl}
-            weather={item.weather}
+            // name={item.name}
+            // image={item.imageUrl}
+            // weather={item.weather}
+            handleLikeClick={() => {
+              handleLikeClick(
+                item._id,
+                item.likes.includes(currentUser._id),
+                currentUser
+              );
+            }}
             onClick={() => handleCardClick(item)}
           />
         ))}

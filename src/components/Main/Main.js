@@ -1,13 +1,21 @@
 import './Main.css';
 import React, { useContext } from 'react';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 import ItemCard from '../ItemCard/ItemCard';
 import WeatherCard from '../WeatherCard/WeatherCard';
 
-function Main({ weatherData, clothingItems, handleCardClick }) {
+function Main({
+  weatherData,
+  clothingItems,
+  handleCardClick,
+  handleLikeClick,
+  isLoggedIn,
+}) {
   // const currentWeather = weatherData.temperature;
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const currentUser = useContext(CurrentUserContext);
 
   const currentTemp =
     currentTemperatureUnit === 'F'
@@ -50,10 +58,19 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
             isOpen='false'
             clothingChoice={item}
             key={item._id}
+            isLoggedIn={isLoggedIn}
+            currentUser={currentUser}
+            handleLikeClick={() => {
+              handleLikeClick(
+                item._id,
+                item.likes.includes(currentUser._id),
+                currentUser
+              );
+            }}
             // name={item.name}
             // image={item.link}
             //weather={item.weather}
-            onClick={() => handleCardClick(item)}
+            handleCardClick={() => handleCardClick(item)}
           />
         ))}
       </ul>

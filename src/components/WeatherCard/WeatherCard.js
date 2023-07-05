@@ -1,6 +1,7 @@
-import "./WeatherCard.css";
-import React, { useContext } from "react";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+import './WeatherCard.css';
+import React, { useContext } from 'react';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+
 const DAY_HOUR = 6;
 const NIGHT_HOUR = 17;
 
@@ -14,28 +15,28 @@ function WeatherCard({ weatherData, currentTemp }) {
 
   const getTimeOfDay = (hours) => {
     if (hours >= DAY_HOUR && hours <= NIGHT_HOUR) {
-      return "Day";
+      return 'Day';
     } else {
-      return "Night";
+      return 'Night';
     }
   };
 
-  const weatherCondition = weatherData?.conditions?.toLowerCase() || "";
+  const weatherCondition = weatherData?.conditions?.toLowerCase() || '';
 
   function getWeatherIcon() {
-    if (weatherCondition === null) return "";
-    if (weatherCondition.includes("clear")) {
+    if (weatherCondition === null) return '';
+    if (weatherCondition.includes('clear')) {
       return `Sunny${getTimeOfDay(time)}.svg`;
-    } else if (weatherCondition.includes("clouds")) {
+    } else if (weatherCondition.includes('clouds')) {
       return `Cloudy${getTimeOfDay(time)}.svg`;
-    } else if (weatherCondition.includes("fog")) {
+    } else if (weatherCondition.includes('fog')) {
       return `Foggy${getTimeOfDay(time)}.svg`;
     } else if (
-      weatherCondition.includes("rain") ||
-      weatherCondition.includes("drizzle")
+      weatherCondition.includes('rain') ||
+      weatherCondition.includes('drizzle')
     ) {
       return `Rainy${getTimeOfDay(time)}.svg`;
-    } else if (weatherCondition.includes("snow")) {
+    } else if (weatherCondition.includes('snow')) {
       return `Snowy${getTimeOfDay(time)}.svg`;
     } else {
       return `Stormy${getTimeOfDay(time)}.svg`;
@@ -44,12 +45,12 @@ function WeatherCard({ weatherData, currentTemp }) {
 
   function checkForRain() {
     if (
-      weatherCondition.includes("clear") ||
-      weatherCondition.includes("clouds")
+      weatherCondition.includes('clear') ||
+      weatherCondition.includes('clouds')
     ) {
-      return "clear";
+      return 'clear';
     } else {
-      return "precip";
+      return 'precip';
     }
   }
 
@@ -59,14 +60,14 @@ function WeatherCard({ weatherData, currentTemp }) {
         time
       )}_${checkForRain()}`}
     >
-      <h2 className="weathercard__temp">
+      <h2 className='weathercard__temp'>
         {` ${currentTemp}°${currentTemperatureUnit} `}
       </h2>
-      <div className="weathercard__image-wrWeatherCarder">
+      <div className='weathercard__image-wrWeatherCarder'>
         <img
-          className="weathercard__image"
-          src={process.env.PUBLIC_URL + "/" + getWeatherIcon()}
-          alt="Display from WeatherCards"
+          className='weathercard__image'
+          src={process.env.PUBLIC_URL + '/' + getWeatherIcon()}
+          alt='Display from WeatherCards'
         />
       </div>
     </div>

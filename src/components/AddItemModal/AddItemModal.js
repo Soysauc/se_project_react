@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import React, { useEffect, useState, useMemo } from 'react';
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
-  const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [weather, setWeather] = useState("");
+  const [name, setName] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [weather, setWeather] = useState('');
 
   useEffect(() => {
-    setName("");
-    setImageUrl("");
-    setWeather("");
+    setName('');
+    setImageUrl('');
+    setWeather('');
   }, [isOpen]);
 
   const handleNameChange = (evt) => {
@@ -28,80 +28,84 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     evt.preventDefault();
     onAddItem(name, imageUrl, weather);
   };
+  const Validation = useMemo(() => {
+    return name.length >= 2 && imageUrl.length >= 1;
+  }, [name, imageUrl]);
 
   return (
     <ModalWithForm
       isOpen={isOpen}
-      type="add"
-      title="New garment"
-      buttonText="Add garment"
+      type='add'
+      title='New garment'
+      buttonText='Add garment'
       onClose={onClose}
       onSubmit={handleSubmit}
       onAddItem={onAddItem}
+      disabled={!Validation}
     >
-      <h4 className="form__label">Name</h4>
+      <h4 className='form__label'>Name</h4>
       <input
         onChange={handleNameChange}
-        className="form__input form__input_type_name"
-        name="name"
-        type="text"
-        placeholder="Name"
+        className='form__input form__input_type_name'
+        name='name'
+        type='text'
+        placeholder='Name'
         value={name}
-        minLength="1"
-        maxLength="40"
+        minLength='1'
+        maxLength='40'
         required
       />
-      <h4 className="form__label">Image</h4>
+      <h4 className='form__label'>Image</h4>
       <input
         onChange={handleImageUrlChange}
-        className="form__input form__input_type_image"
-        name="image"
-        type="url"
+        className='form__input form__input_type_image'
+        name='image'
+        type='url'
         value={imageUrl}
-        placeholder="Image URL"
+        placeholder='Image URL'
         required
       />
-      <h4 className="form__label">Select the weather type:</h4>
-      <div className="form__radio-container">
-        <div className="form__radio">
+      <h4 className='form__label'>Select the weather type:</h4>
+      <div className='form__radio-container'>
+        <div className='form__radio'>
           <input
-            type="radio"
+            type='radio'
             onChange={handleWeatherChange}
-            checked={weather === "hot"}
-            className="form__input_radio"
+            checked={weather === 'hot'}
+            className='form__input_radio'
             name={weather}
-            value="hot"
-            id="hot"
+            value='hot'
+            id='hot'
           />
-          <label className="form__label_radio" htmlFor="hot">
+          <label className='form__label_radio' htmlFor='hot'>
             Hot
           </label>
         </div>
-        <div className="form__radio">
+        <div className='form__radio'>
           <input
-            type="radio"
+            type='radio'
             onChange={handleWeatherChange}
-            checked={weather === "warm"}
-            className="form__input_radio"
+            checked={weather === 'warm'}
+            className='form__input_radio'
             name={weather}
-            value="warm"
-            id="warm"
+            value='warm'
+            id='warm'
           />
-          <label className="form__label_radio" htmlFor="warm">
+          <label className='form__label_radio' htmlFor='warm'>
             Warm
           </label>
         </div>
-        <div className="form__radio">
+        <div className='form__radio'>
           <input
-            type="radio"
+            type='radio'
             onChange={handleWeatherChange}
-            checked={weather === "cold"}
-            className="form__input_radio"
+            checked={weather === 'cold'}
+            className='form__input_radio'
             name={weather}
-            value="cold"
-            id="cold"
+            value='cold'
+            id='cold'
           />
-          <label className="form__label_radio" htmlFor="cold">
+          <label className='form__label_radio' htmlFor='cold'>
             Cold
           </label>
         </div>

@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import '../ModalWithForm/ModalWithForm.css';
 
-const LoginModal = ({ isOpen, onClose, handleLogin, handleToggleModal }) => {
+const LoginModal = ({
+  isOpen,
+  onClose,
+  handleLogin,
+  handleToggleModal,
+  showFormError,
+  setShowFormError,
+  isLoading,
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -19,33 +27,50 @@ const LoginModal = ({ isOpen, onClose, handleLogin, handleToggleModal }) => {
       history.push('/profile');
     });
   };
+  const Validation = useMemo(() => {
+    return password.length >= 8 && email.length >= 1;
+  }, [email, password]);
 
+  const handleEmail = (evt) => {
+    setEmail(evt.target.value);
+  };
+
+  const handlePassword = (evt) => {
+    setPassword(evt.target.value);
+  };
   return (
     <ModalWithForm
       isOpen={isOpen}
       type='login'
       title='Log in'
-      buttonText='Log in'
+      buttonText={isLoading ? 'Loading...' : 'Log in'}
       onClose={onClose}
+      disabled={!Validation}
       onSubmit={onSubmit}
     >
-      <h4 className='form__label'>Email</h4>
+      <h4 className={showFormError ? 'form__label_error' : 'form__label'}>
+        {showFormError ? 'Incorrect email or password' : 'Email'}
+      </h4>{' '}
       <input
-        className='form__input'
+        className={showFormError ? 'form__input_error' : 'form__input'}
         name='email'
         type='email'
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleEmail}
+        // onChange={(evt) => setEmail(evt.target.value)}
         placeholder='Email'
         required
       />
-      <h4 className='form__label'>Password</h4>
+      <h4 className={showFormError ? 'form__label_error' : 'form__label'}>
+        {showFormError ? 'Incorrect email or password' : 'Password'}
+      </h4>{' '}
       <input
-        className='form__input'
+        className={showFormError ? 'form__input_error' : 'form__input'}
         name='password'
         type='text'
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handlePassword}
+        // onChange={(evt) => setPassword(evt.target.value)}
         placeholder='Password'
         required
       />
