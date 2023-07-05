@@ -35,7 +35,6 @@ function Main({ weatherData, clothingItems, handleCardClick }) {
   }
 
   const clothingChoices = clothingItems.filter(filterClothing);
-  console.log(clothingChoices);
   //commented for
 
   return (

@@ -19,6 +19,8 @@ export const signup = ({ name, avatar, email, password }) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Accept': 'application/json',
     },
     body: JSON.stringify({ name, avatar, email, password }),
   });
@@ -29,6 +31,8 @@ export const signin = ({ email, password }) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Accept': 'application/json',
     },
     body: JSON.stringify({ email, password }),
   })

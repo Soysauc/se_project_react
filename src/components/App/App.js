@@ -40,13 +40,16 @@ const App = () => {
   const [showFormError, setShowFormError] = useState(false);
 
   const handleRegistration = async (name, avatar, email, password) => {
-    return signup(name, avatar, email, password).then((data) => {
+    try {
+      await signup({ name, avatar, email, password });
       setIsLoggedIn(true);
-      setCurrentUser({ name: data.name, avatar: data.avatar });
+      setCurrentUser({ name, avatar });
       onClose();
-    });
+    } catch (error) {
+      console.log(error);
+      // Handle any registration errors
+    }
   };
-
   useEffect(() => {
     if (location.latitude && location.longitude) {
       getForecastWeather(location, APIKey)
@@ -150,7 +153,7 @@ const App = () => {
         console.log(e);
       });
   };
-  const handleAuthorization = (email, password) => {
+  const handleLogin = (email, password) => {
     signin(email, password)
       .then(() => {
         setIsLoggedIn(true);
@@ -260,7 +263,7 @@ const App = () => {
             type={'login'}
             onClose={onClose}
             handleToggleModal={handleToggleModal}
-            handleLogin={handleAuthorization}
+            handleLogin={handleLogin}
             handleProfileUpdate={handleProfileUpdate}
           />
           <ItemModal
@@ -273,7 +276,6 @@ const App = () => {
           {/* Sprint 14 */}
 
           <RegisterModal
-            handleSignUp={handleRegistration}
             isOpen={activeModal === 'register'}
             type={'register'}
             onClose={onClose}

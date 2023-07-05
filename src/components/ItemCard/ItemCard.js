@@ -6,9 +6,9 @@ const ItemCard = ({ clothingChoice, onClick }) => {
     <li className='item-card' onClick={onClick}>
       <h5 className='item-card__title'>{clothingChoice.name}</h5>
       <img
+        alt={clothingChoice.name}
         className='item-card__image'
         src={clothingChoice.imageURL}
-        alt={clothingChoice.name}
       />
     </li>
   );
