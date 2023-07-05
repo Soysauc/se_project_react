@@ -31,7 +31,7 @@
   line-height: 20px;
   border-radius: 20px;
   margin: auto;
-  font-family: "CabinetGrotesk-Bold", sans-serif;
+  font-family: 'CabinetGrotesk-Bold', sans-serif;
   position: fixed;
 }
 
@@ -59,8 +59,7 @@
   width: 498px;
   height: 498px;
   object-fit: cover;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-radius: 16px 16px 0 0;
 }
 
 .item-modal__info {

@@ -1,6 +1,6 @@
 .profile__clothes-section {
-  max-width: 1015px;
   margin-top: 7px;
+  max-width: 1015px;
 }
 
 .profile__clothes-section-header {
@@ -8,26 +8,25 @@
 }
 
 .profile__clothes-section-title {
-  margin: 0px;
   font-size: 20px;
+  margin: 0;
 }
 
 .profile__clothes-section-items {
-  margin-top: 16px;
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 0;
+  margin-top: 16px;
   column-gap: 15px;
   row-gap: 20px;
-  flex-wrap: wrap;
+  padding: 0;
 }
 
 .profile__add-clothes-btn {
-  margin: 0px 20px;
-  border: 0;
+  margin: 0 20px;
+  padding: 0;
+  border: none;
   background-color: transparent;
-  padding: 0px;
   color: rgba(0, 0, 0, 0.6);
   font-size: 20px;
 }
