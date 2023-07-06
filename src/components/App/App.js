@@ -10,7 +10,7 @@ import ItemModal from '../ItemModal/ItemModal';
 import AddItemModal from '../AddItemModal/AddItemModal';
 import './App.css';
 import Profile from '../Profile/Profile';
-import { getItems, addItem, deleteItem } from '../../utils/api';
+// import { getItems, addItem, deleteItem } from '../../utils/api';
 import { location, APIKey } from '../../utils/constants';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -21,6 +21,7 @@ import {
 } from '../../utils/weatherApi';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
+import * as api from '../../utils/api';
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
@@ -40,15 +41,13 @@ const App = () => {
   const [showFormError, setShowFormError] = useState(false);
 
   const handleRegistration = async (name, avatar, email, password) => {
-    try {
-      await signup({ name, avatar, email, password });
-      setIsLoggedIn(true);
-      setCurrentUser({ name, avatar });
-      onClose();
-    } catch (error) {
-      console.log(error);
-      // Handle any registration errors
-    }
+    return signup({ name, avatar, email, password })
+      .then((res) => {
+        setIsLoggedIn(true);
+        setCurrentUser(res);
+        onClose();
+      })
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     if (location.latitude && location.longitude) {
@@ -98,36 +97,51 @@ const App = () => {
   };
 
   const handleCardDelete = () => {
-    deleteItem(selectedCard.id)
+    api
+      .deleteItem(selectedCard._id)
       .then(() => {
         setClothingItems(
-          clothingItems.filter((item) => item.id !== selectedCard.id)
+          clothingItems.filter((item) => item._id !== selectedCard._id)
         );
         setSelectedCard({});
         onClose();
       })
       .catch((err) => console.log(err));
   };
-  const addCardLike = (id, token) => {};
-  const removeCardLike = (id, token) => {};
+  // const addCardLike = (id, token) => {};
+  // const removeCardLike = (id, token) => {};
 
-  const handleLikeClick = ({ id, isLiked, user }) => {
-    const token = localStorage.getItem('jwt');
-    isLiked
-      ? addCardLike({ id, user }, token)
-          .then((updatedCard) => {
-            setClothingItems((cards) =>
-              cards.map((card) => (card._id === id ? updatedCard : card))
-            );
-          })
-          .catch((err) => console.log(err))
-      : removeCardLike({ id, user }, token)
-          .then((updatedCard) => {
-            setClothingItems((cards) =>
-              cards.map((card) => (card._id === id ? updatedCard : card))
-            );
-          })
-          .catch((err) => console.log(err));
+  const handleLike = (cardId) => {
+    api
+      .addCardLike(cardId)
+      .then((likedCard) => {
+        setClothingItems((state) =>
+          state.map((card) => (card._id === cardId ? likedCard : card))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDislike = (cardId) => {
+    api
+      .removeCardLike(cardId)
+      .then((likedCard) => {
+        setClothingItems((state) =>
+          state.map((card) => (card._id === cardId ? likedCard : card))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleLikeClick = (cardId, isLiked) => {
+    if (isLiked) {
+      handleDislike(cardId);
+    } else {
+      handleLike(cardId);
+    }
+  };
+  const handleFormError = () => {
+    setShowFormError(false);
   };
 
   const handleToggleSwitchChange = () => {
@@ -141,31 +155,48 @@ const App = () => {
       : setActiveModal('login');
   };
   const handleProfileUpdate = async ({ name, avatar, token }) => {
+    setIsLoading(true);
     updateUser(name, avatar, token)
-      .then((data) => {
-        setCurrentUser({
-          name: data.name,
-          avatar: data.avatar,
-          id: data._id,
-        });
+      .then((res) => {
+        setCurrentUser(res);
       })
-      .catch((e) => {
-        console.log(e);
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
       });
   };
-  const handleLogin = (email, password) => {
+  const handleAuthorization = (email, password) => {
+    setIsLoading(true);
+    setShowFormError(false);
     signin(email, password)
       .then(() => {
         setIsLoggedIn(true);
+        setIsLoading(false);
         onClose();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+        setShowFormError(true);
+      });
   };
+  // const handleLogin = (email, password) => {
+  //   signin(email, password)
+  //     .then(() => {
+  //       setIsLoggedIn(true);
+  //       onClose();
+  //     })
+  //     .catch((err) => console.log(err));
+  //}
 
   const fetchClothingItems = () => {
-    getItems()
+    api
+      .getItems()
       .then(({ data }) => {
-        // console.log({ data });
+        console.log({ data });
         setClothingItems(data);
       })
       .catch((err) => console.log(err));
@@ -189,6 +220,12 @@ const App = () => {
     }
   }, [isLoggedIn]);
 
+  const handleLogout = (evt) => {
+    evt.preventDefault();
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
+
   useEffect(() => {
     fetchClothingItems();
   }, []);
@@ -197,13 +234,24 @@ const App = () => {
 
   const handleAddItemSubmit = (name, imageUrl, weatherType) => {
     setIsLoading(true);
-    addItem(name, imageUrl, weatherType)
+    console.log(
+      `Adding item with name: ${name}, imageUrl: ${imageUrl}, weatherType: ${weatherType}`
+    ); // Log the values
+
+    api
+      .addItem(name, imageUrl, weatherType)
       .then((item) => {
         const items = [...clothingItems, item];
         setClothingItems(items);
         onClose();
       })
-      .catch((err) => console.log(err));
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
   };
 
   return (
@@ -238,9 +286,17 @@ const App = () => {
             {/* <Route path={'/profile'}>  Legacy code*/}
             <ProtectedRoute isLoggedIn={isLoggedIn} path='/profile'>
               <Profile
+                currentUser={currentUser}
                 weatherData={weatherData}
                 clothingItems={clothingItems}
                 handleCardClick={handleCardClick}
+                handleLikeClick={handleLikeClick}
+                openEditModal={() => {
+                  setActiveModal('update');
+                }}
+                isLoggedIn={isLoggedIn}
+                handleLogout={handleLogout}
+                isLoading={isLoading}
                 openModal={() => {
                   setActiveModal('add');
                 }}
@@ -253,6 +309,7 @@ const App = () => {
 
           <AddItemModal
             isOpen={activeModal === 'add'}
+            isLoading={isLoading}
             type={'add'}
             onAddItem={handleAddItemSubmit}
             onClose={onClose}
@@ -263,8 +320,11 @@ const App = () => {
             type={'login'}
             onClose={onClose}
             handleToggleModal={handleToggleModal}
-            handleLogin={handleLogin}
+            handleLogin={handleAuthorization}
             handleProfileUpdate={handleProfileUpdate}
+            showFormError={showFormError}
+            setShowFormError={handleFormError}
+            isLoading={isLoading}
           />
           <ItemModal
             isOpen={activeModal === 'item'}
@@ -278,6 +338,9 @@ const App = () => {
           <RegisterModal
             isOpen={activeModal === 'register'}
             type={'register'}
+            showFormError={showFormError}
+            setShowFormError={handleFormError}
+            isLoading={isLoading}
             onClose={onClose}
             handleRegistration={handleRegistration}
             handleToggleModal={handleToggleModal}
@@ -296,6 +359,7 @@ const App = () => {
             isOpen={activeModal === 'update'}
             type={'update'}
             onClose={onClose}
+            isLoading={isLoading}
             currentUser={currentUser}
             handleUserUpdate={handleProfileUpdate}
           />

@@ -16,8 +16,8 @@ const EditProfileModal = ({
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (evt) => {
+    evt.preventDefault();
     handleUserUpdate({
       name,
       avatar,
@@ -27,12 +27,12 @@ const EditProfileModal = ({
     });
   };
 
-  const handleNameInput = (e) => {
-    setName(e.target.value);
+  const handleNameInput = (evt) => {
+    setName(evt.target.value);
   };
 
-  const handleAvatarInput = (e) => {
-    setAvatar(e.target.value);
+  const handleAvatarInput = (evt) => {
+    setAvatar(evt.target.value);
   };
 
   return (

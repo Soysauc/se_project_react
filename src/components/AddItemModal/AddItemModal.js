@@ -27,6 +27,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose, isLoading }) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     onAddItem(name, imageUrl, weather);
+    console.log(name, imageUrl, weather);
   };
   const Validation = useMemo(() => {
     return name.length >= 2 && imageUrl.length >= 1;

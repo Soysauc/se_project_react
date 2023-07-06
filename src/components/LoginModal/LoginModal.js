@@ -23,10 +23,10 @@ const LoginModal = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleLogin(email, password).then(() => {
-      history.push('/profile');
-    });
+    handleLogin(email, password);
+    history.push('/profile');
   };
+
   const Validation = useMemo(() => {
     return password.length >= 8 && email.length >= 1;
   }, [email, password]);

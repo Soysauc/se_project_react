@@ -16,12 +16,12 @@ function SideBar({ currentUser, openEditModal, handleLogout }) {
             alt='User avatar'
           />
         )}
-        <h2 className='sidebar__user-name'>{currentUser.name}</h2>
+        <h2 className='sidebar__username'>{currentUser.name}</h2>
       </div>
-      <button className='sidebar__btn' onClick={openEditModal}>
+      <button className='sidebar__button' onClick={openEditModal}>
         Change profile data
       </button>
-      <button className='sidebar__btn' onClick={handleLogout}>
+      <button className='sidebar__button' onClick={handleLogout}>
         Log out
       </button>
     </div>

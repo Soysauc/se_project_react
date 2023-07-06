@@ -3,10 +3,8 @@ const baseUrl = 'http://localhost:3001';
 const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
-  } else if (res.status === 401) {
-    throw new Error('Invalid credentials');
-  } else if (res.status === 409) {
-    throw new Error('User exists');
+  } else {
+    return Promise.reject(`Error: ${res.status}`);
   }
 };
 async function req(url, options) {
@@ -15,7 +13,7 @@ async function req(url, options) {
 }
 
 export const signup = ({ name, avatar, email, password }) => {
-  return fetch(`${baseUrl}/signup`, {
+  return req(`${baseUrl}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +25,7 @@ export const signup = ({ name, avatar, email, password }) => {
 };
 
 export const signin = ({ email, password }) => {
-  return fetch(`${baseUrl}/signin`, {
+  return req(`${baseUrl}/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,6 +37,8 @@ export const signin = ({ email, password }) => {
     .then(checkResponse)
     .then((data) => {
       if (data.token) {
+        console.log(data, 'Come on and find me'); // log data to check if token is present
+
         localStorage.setItem('token', data.token);
         return data;
       }

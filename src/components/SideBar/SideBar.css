@@ -9,6 +9,7 @@
   flex-direction: row;
   margin-bottom: 24px;
   align-items: center;
+  margin-left: 40px;
 }
 
 .sidebar__user-icon {
@@ -35,13 +36,13 @@
   text-align: center;
 }
 
-.sidebar__user-name {
+.sidebar__username {
   margin: 0px;
   line-height: 25px;
   font-size: 20px;
 }
 
-.sidebar__btn {
+.sidebar__button {
   cursor: pointer;
   background-color: transparent;
   border: none;
