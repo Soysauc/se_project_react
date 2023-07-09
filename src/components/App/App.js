@@ -172,7 +172,7 @@ const App = () => {
     setIsLoading(true);
     setShowFormError(false);
     signin(email, password)
-      .then(() => {
+      .then((res) => {
         setIsLoggedIn(true);
         setIsLoading(false);
         onClose();

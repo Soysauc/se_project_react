@@ -24,7 +24,7 @@ export const signup = ({ name, avatar, email, password }) => {
   });
 };
 
-export const signin = ({ email, password }) => {
+export const signin = (email, password) => {
   return req(`${baseUrl}/signin`, {
     method: 'POST',
     headers: {
