@@ -45,6 +45,7 @@ const App = () => {
       .then((res) => {
         setIsLoggedIn(true);
         setCurrentUser(res);
+        console.log(res);
         onClose();
       })
       .catch((err) => console.log(err));
@@ -176,6 +177,9 @@ const App = () => {
         setIsLoggedIn(true);
         setIsLoading(false);
         onClose();
+        getUser(res.token).then((response) => {
+          setCurrentUser(response.data);
+        });
       })
       .catch((err) => {
         setIsLoading(false);
@@ -207,7 +211,7 @@ const App = () => {
       const jwt = localStorage.getItem('token');
       setIsLoggedIn(true);
       getUser(jwt)
-        .then((data) => {
+        .then(({ data }) => {
           setCurrentUser({
             name: data.name,
             avatar: data.avatar,

@@ -33,16 +33,14 @@ export const signin = (email, password) => {
       'Accept': 'application/json',
     },
     body: JSON.stringify({ email, password }),
-  })
-    .then(checkResponse)
-    .then((data) => {
-      if (data.token) {
-        console.log(data, 'Come on and find me'); // log data to check if token is present
+  }).then((data) => {
+    if (data.token) {
+      console.log(data, 'Come on and find me'); // log data to check if token is present
 
-        localStorage.setItem('token', data.token);
-        return data;
-      }
-    });
+      localStorage.setItem('token', data.token);
+      return data;
+    }
+  });
 };
 export const updateUser = (name, avatar, token) => {
   return req(`${baseUrl}/users/me`, {
@@ -55,7 +53,9 @@ export const updateUser = (name, avatar, token) => {
     body: JSON.stringify({ name, avatar }),
   });
 };
+
 export const getUser = (token) => {
+  console.log(token, 'here i am');
   return req(`${baseUrl}/users/me`, {
     method: 'GET',
     headers: {
